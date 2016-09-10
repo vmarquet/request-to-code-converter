@@ -6,6 +6,10 @@ A service to generate Ruby code from request data.
 ###
 angular.module('requestToCodeApp').service('RubyGeneratorService', () ->
   @generate = (request) ->
+    # we need to escape double quotes that may be present in header values
+    for k,v of request.headers
+      request.headers[k] = v.replace(new RegExp('"', 'g'), '\\"')
+
     s  = "#!/usr/bin/env ruby\n\n"
 
     s += "require \"net/http\"\n"
@@ -21,8 +25,7 @@ angular.module('requestToCodeApp').service('RubyGeneratorService', () ->
     s += "http = Net::HTTP.new(url.host, url.port)\n"
     s += "request = Net::HTTP::Get.new(url.path, headers)\n\n"
 
-    # by default, the value we set will be appended to User-Agent, 
-    # so we need 'initialize_http_header' to remove the default value ('Ruby')
+    s += "# remove default user agent ('Ruby')\n"
     if request.headers['User-Agent']?
       s += "request.initialize_http_header({\"User-Agent\" => \"#{request.headers['User-Agent']}\"})\n\n"
     else
