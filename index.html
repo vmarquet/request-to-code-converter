@@ -2,8 +2,9 @@
 layout: default
 ---
 
-<div class="btn-group" role="group" aria-label="...">
-	<button type="button" class="btn btn-default active">Ruby</button>
+<div class="btn-group" role="group" ng-controller="LanguageController">
+	<a class="btn btn-default" ng-class="{'active': isActive('ruby')}" ng-click="setActive('ruby')">Ruby</a>
+	<a class="btn btn-default" ng-class="{'active': isActive('python')}" ng-click="setActive('python')">Python</a>
 </div>
 
 <br><br>

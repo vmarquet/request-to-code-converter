@@ -4,18 +4,24 @@
 ###
 Our main controller.
 ###
-angular.module('requestToCodeApp').controller('ConvertionController', ($scope, RequestParserService, RubyGeneratorService) ->
+angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $rootScope, LanguageService, RequestParserService, RubyGeneratorService, PythonGeneratorService) ->
   console.log('init ConvertionController')
 
   $scope.data = ""
 
   $scope.convert = () ->
+    console.log('$scope.convert, language = ' + LanguageService.language)
+
     if $scope.data == ""
       $scope.show_code = false
       return
 
     request = RequestParserService.parse($scope.data)
-    result = RubyGeneratorService.generate(request)
+
+    if LanguageService.language == 'ruby'
+      result = RubyGeneratorService.generate(request)
+    else if LanguageService.language == 'python'
+      result = PythonGeneratorService.generate(request)
 
     # we update the syntax highlighting settings
     document.getElementsByTagName('code')[0].className = "#{code.language} hljs"
