@@ -8,15 +8,23 @@ angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $
   console.log('init ConvertionController')
 
   $scope.data = ""
+  $scope.message = undefined
 
   $scope.convert = () ->
     console.log('$scope.convert, language = ' + LanguageService.language)
 
     if $scope.data == ""
+      $scope.message = undefined
       $scope.show_code = false
       return
 
-    request = RequestParserService.parse($scope.data)
+    try
+      request = RequestParserService.parse($scope.data)
+    catch message
+      console.log('RequestParserService.parse error')
+      $scope.message = message
+      $scope.show_code = false
+      return
 
     if LanguageService.language == 'ruby'
       result = RubyGeneratorService.generate(request)
@@ -36,5 +44,8 @@ angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $
 
     $scope.show_code = true
     return result.code
+
+  $scope.showError = () ->
+    not ($scope.message is undefined or $scope.message is "")
 )
 

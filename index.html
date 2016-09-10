@@ -28,6 +28,7 @@ layout: default
 		<div class="well" ng-hide="show_code">
 			<h2>Instructions</h2>
 			<p>Enter the HTTP request on the left.</p>
+			<div class="alert alert-danger" role="alert" ng-show="showError()" ng-bind="message"></div>
 		</div>
 	</div>
 </div>
