@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Request to code converter</title>
+
+    <link rel="icon" href="/favicon.png">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- AngularJS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular-route.min.js"></script>
+
+    <!-- Our AngularJS app -->
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/convertion_controller.js"></script>
+    <script type="text/javascript" src="app/services/request_parser_service.js"></script>
+    <script type="text/javascript" src="app/services/ruby_generator_service.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- remove some Bootstrap styling that conflict with HighlightJS -->
+    <style>
+        pre{
+            padding: 0 0 0 0px;
+            margin: 0 0 0 0px;
+            background-color: #ffffff;
+            border: 0px solid #ccc;
+            border-radius: 0px;
+        }
+    </style>
+
+    <!-- HighlightJS - syntax highlighting for code -->
+    <link rel="stylesheet" href="css/monokai-sublime.css">
+
+    <!-- ClipboardJS - copy to clipboard -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+</head>
+
+<body ng-app="requestToCodeApp">
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">Request to code converter — convert HTTP to Ruby, Python, ...</a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <div style="float: right; position: relative; top: 10px;">
+                                <iframe src="https://ghbtns.com/github-btn.html?user=vmarquet&repo=request-to-code-converter&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+                            </div>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                </nav>
+
+                {{ content }}
+
+                <div id="footer">
+                    <div class="container">
+                        <hr>
+                        <p style="text-align: center;">Request to code converter — <iframe style="position: relative; top: 5px;" src="https://ghbtns.com/github-btn.html?user=vmarquet&type=follow&count=true" frameborder="0" scrolling="0" width="156px" height="20px"></iframe> — Licence: TODO</p>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous">
+    </script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- HighlightJS - syntax highlighting for code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+    <script type="text/javascript">
+        // HighlightJS initialization
+        $(document).ready(function() {
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        });
+
+        // ClipboardJS initialization
+        var clipboard = new Clipboard('#copyToClipboardButton');
+
+        clipboard.on('success', function(e) {
+            setTooltip(e.trigger, 'Copied!');
+            hideTooltip(e.trigger);
+        });
+
+        clipboard.on('error', function(e) {
+            alert("Copy failed, it is not supported by your browser :(");
+        });
+
+        // stuff to display tooltip to say "Copied!"
+        $('#copyToClipboardButton').tooltip({
+            trigger: 'click',
+            placement: 'bottom'
+        });
+
+        function setTooltip(btn, message) {
+            $(btn).tooltip('hide')
+                .attr('data-original-title', message)
+                .tooltip('show');
+        }
+
+        function hideTooltip(btn) {
+            setTimeout(function() {
+                $(btn).tooltip('hide');
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

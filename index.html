@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<div class="btn-group" role="group" aria-label="...">
+	<button type="button" class="btn btn-default active">Ruby</button>
+</div>
+
+<br><br>
+
+<div class="row" ng-controller="ConvertionController">
+	<div class="col-lg-6">
+		<div class="form-group">
+			<textarea class="form-control" rows="20" placeholder="Paste HTTP request here..." ng-init="" ng-model="data">
+			</textarea>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div id="code-result" ng-show="show_code">
+			<pre><code id="code" ng-bind="convert()"></code></pre>
+
+			<div style="height: 5px"></div>
+			
+			<button type="button" class="btn btn-success btn-sm" id="copyToClipboardButton" data-clipboard-target="#code">Copy code to clipboard</button>
+			<a class="btn btn-success btn-sm" id="download">Download</a>
+		</div>
+		<div class="well" ng-hide="show_code">
+			<h2>Instructions</h2>
+			<p>Enter the HTTP request on the left.</p>
+		</div>
+	</div>
+</div>
+
