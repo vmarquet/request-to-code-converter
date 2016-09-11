@@ -28,16 +28,19 @@ angular.module('requestToCodeApp').service('PythonGeneratorService', () ->
 
     if request.post_data? and request.post_data != ""
       post_data = "\"#{request.post_data.replace(new RegExp('"', 'g'), '\\"').replace(new RegExp('\n', 'g'), '\\n')}\""
+      s += "body = #{post_data}\n\n"
+      body = "body"
     else
-      post_data = 'None'
-    s += "request = Request('http://" + request.headers['Host'] + request.path + "', #{post_data}, headers)\n\n"
+      body = 'None'
+
+    s += "request = Request('http://" + request.headers['Host'] + request.path + "', #{body}, headers)\n\n"
 
     s += "# make request\n"
     s += "response = urlopen(request)\n\n"
 
     s += "# display response\n"
     s += "print(response.getcode())\n"
-    s += "if response.info().get('Content-Encoding').strip() == 'gzip':\n"
+    s += "if str(response.info().get('Content-Encoding')).strip() == 'gzip':\n"
     s += "    print(gzip.GzipFile(fileobj=StringIO(response.read())).read())\n"
     s += "else:\n"
     s += "    print(response.read())\n"
