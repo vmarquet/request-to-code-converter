@@ -23,13 +23,18 @@ angular.module('requestToCodeApp').service('RubyGeneratorService', () ->
     s += "}\n\n"
 
     s += "http = Net::HTTP.new(url.host, url.port)\n"
-    s += "request = Net::HTTP::Get.new(url.path, headers)\n\n"
+    verb = request.verb.charAt(0).toUpperCase() + request.verb.slice(1).toLowerCase();
+    s += "request = Net::HTTP::#{verb}.new(url.path, headers)\n\n"
 
     s += "# remove default user agent ('Ruby')\n"
     if request.headers['User-Agent']?
       s += "request.initialize_http_header({\"User-Agent\" => \"#{request.headers['User-Agent']}\"})\n\n"
     else
       s += "request.initialize_http_header({\"User-Agent\" => \"\"})\n\n"
+
+    if request.post_data? and request.post_data != ""
+      post_data = request.post_data.replace(new RegExp('"', 'g'), '\\"').replace(new RegExp('\n', 'g'), '\\n')
+      s += "request.body = \"#{post_data}\"\n\n"
 
     s += "# make request\n"
     s += "response = http.request(request)\n\n"
