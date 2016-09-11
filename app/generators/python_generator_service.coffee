@@ -3,6 +3,7 @@
 
 ###
 A service to generate Python code from request data.
+NOTA BENE: urllib supports only GET and POST requests.
 ###
 angular.module('requestToCodeApp').service('PythonGeneratorService', () ->
   @generate = (request) ->
@@ -25,7 +26,11 @@ angular.module('requestToCodeApp').service('PythonGeneratorService', () ->
       s += "    \"#{k}\": \"#{v}\",\n"
     s += "}\n\n"
 
-    s += "request = Request('http://" + request.headers['Host'] + request.path + "', None, headers)\n\n"
+    if request.post_data? and request.post_data != ""
+      post_data = "\"#{request.post_data.replace(new RegExp('"', 'g'), '\\"').replace(new RegExp('\n', 'g'), '\\n')}\""
+    else
+      post_data = 'None'
+    s += "request = Request('http://" + request.headers['Host'] + request.path + "', #{post_data}, headers)\n\n"
 
     s += "# make request\n"
     s += "response = urlopen(request)\n\n"
