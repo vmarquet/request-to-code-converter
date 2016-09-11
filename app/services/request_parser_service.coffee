@@ -12,8 +12,8 @@ angular.module('requestToCodeApp').service('RequestParserService', () ->
 
     [request.verb, request.path, request.version] = lines[0].split(" ")
 
-    if request.verb not in ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'OPTIONS']
-      throw 'HTTP verb not in GET POST HEAD PUT DELETE OPTIONS'
+    if request.verb not in ['GET', 'POST', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'TRACE']
+      throw 'HTTP verb not in [GET POST HEAD PUT DELETE OPTIONS TRACE]'
 
     if lines[0].split(" ").length < 2
       throw 'missing path in HTTP request first line'
