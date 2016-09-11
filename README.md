@@ -12,3 +12,12 @@ Built with:
 * [AngularJS](https://angularjs.org/)
 * [HighlightJS](https://highlightjs.org/)
 
+
+### Get started (developpers)
+
+To run the server locally:
+
+```
+$ gem install jekyll jekyll-coffeescript
+$ jekyll serve --watch
+```
