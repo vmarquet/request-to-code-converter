@@ -4,7 +4,7 @@
 ###
 Our main controller.
 ###
-angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $rootScope, LanguageService, RequestParserService, RubyGeneratorService, PythonGeneratorService) ->
+angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $rootScope, LanguageService, RequestParserService, CurlParserService, RubyGeneratorService, PythonGeneratorService) ->
   console.log('init ConvertionController')
 
   $scope.data = ""
@@ -19,9 +19,13 @@ angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $
       return
 
     try
-      request = RequestParserService.parse($scope.data)
+      word = $scope.data.split(" ")[0].trim()
+      if word == 'curl'
+        request = CurlParserService.parse($scope.data)
+      else
+        request = RequestParserService.parse($scope.data)
     catch message
-      console.log('RequestParserService.parse error')
+      console.log('parse error')
       $scope.message = message
       $scope.show_code = false
       return
@@ -32,7 +36,7 @@ angular.module('requestToCodeApp').controller('ConvertionController', ($scope, $
       result = PythonGeneratorService.generate(request)
 
     # we update the syntax highlighting settings
-    document.getElementsByTagName('code')[0].className = "#{code.language} hljs"
+    document.getElementsByTagName('code')[0].className = "#{result.language} hljs"
     hljs.highlightBlock document.getElementsByTagName('code')[0]
 
     # we update the download link
